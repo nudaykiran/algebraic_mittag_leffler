@@ -1,0 +1,52 @@
+︠# Algebraic Mittag-Leffler Theorem
+# This is a demonstration of our algebraic approach to partial fractions of meromorphic functions 
+# Perform a partial fraction of x^(s)/sin(x)^r for s,r in {1,2,3,...}
+# Input: f: numerator = x^s
+#        r: power of sin(x), in the denominator
+#        k: centering about k*pi (if k=0 then the series is centered about 0)
+#        no_terms: number of terms in the series partial fractions
+# Output: list of coefficients of 
+
+def PF_meromophic_sinx(f,r,k,no_terms):
+    P=PolynomialRing(QQ,'x')
+    #determine the taylor series of f(x)
+    S=0
+
+    if f.is_constant():
+        S=f
+    elif k==0:
+        for j in range(r):
+            term=f(k*pi)/factorial(j)
+            f=f.derivative()
+            S=S+term*(x)^(j)
+    else:
+        for j in range(r):
+            term=f(k*pi)/factorial(j)
+            f=f.derivative()
+            S=S+term*(x)^(j) # (x-k*pi) is written as x
+
+    g = x^(r)/sin(x)^r
+    Numera=g.taylor(x,0,no_terms).list()
+
+    T=P(0)
+    for j in range(no_terms):
+        T=T+Numera[j]*(x)^(j) # (x-k*pi) is written as x
+
+    L=expand(S*T).list()
+    return L
+
+P=PolynomialRing(QQ,'x')
+r=10
+s=0
+k=0
+no_terms=20
+f=P(x^s)
+L=PF_meromophic_sinx(f,r,k,no_terms)
+L
+︡
+
+
+
+
+
+
